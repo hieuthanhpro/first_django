@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">🛍️ Cửa Hàng Sách</h2>
+    <div class="row">
+        {% for book in books %}
+        <div class="col-md-4">
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text"><strong>Tác giả:</strong> {{ book.author }}</p>
+                    <p class="card-text"><strong>Giá:</strong> ${{ book.price }}</p>
+                    <p class="card-text"><strong>Tồn kho:</strong> {{ book.stock }}</p>
+                    
+                    {% if book.is_available %}
+                        <form action="{% url 'add_to_cart' book.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100">🛒 Thêm vào giỏ hàng</button>
+                        </form>
+                    {% else %}
+                        <button class="btn btn-secondary w-100" disabled>❌ Hết hàng</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'cart_view' %}" class="btn btn-primary">🛒 Xem giỏ hàng</a>
+    </div>
+</div>
+{% endblock %}
