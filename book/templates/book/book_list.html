@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Danh sách sách</h2>
+    <a href="{% url 'book_create' %}">➕ Thêm sách mới</a>
+    <table border="1">
+        <tr>
+            <th>Tiêu đề</th>
+            <th>Tác giả</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Hành động</th>
+        </tr>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.price }}</td>
+            <td>{{ book.stock }}</td>
+            <td>
+                <a href="{% url 'book_update' book.pk %}">✏️ Sửa</a> |
+                <a href="{% url 'book_delete' book.pk %}">❌ Xóa</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

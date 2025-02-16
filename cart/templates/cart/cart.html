@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>🛒 Giỏ hàng của bạn</h2>
+    {% if cart_items %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sách</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.book.title }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.book.price }} ₫</td>
+                    <td>{{ item.quantity|floatformat:0|add:item.book.price }} ₫</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h4>Tổng tiền: {{ total_price }} ₫</h4>
+    {% else %}
+        <p>🛒 Giỏ hàng của bạn đang trống!</p>
+    {% endif %}
+</div>
+{% endblock %}

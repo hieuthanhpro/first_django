@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Xóa sách</h2>
+    <p>Bạn có chắc chắn muốn xóa "{{ book.title }}" không?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">🗑️ Xóa</button>
+    </form>
+    <a href="{% url 'book_list' %}">⬅️ Quay lại</a>
+{% endblock %}

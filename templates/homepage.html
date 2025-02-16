@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HomePage</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-sm p-4">
+        <h1 class="text-primary">Welcome to the Homepage</h1>
+        <p class="text-muted">If you can see this, it means you are already logged in.</p>
+        <p class="text-muted">If you try to access the login page again, you will be redirected here.</p>
+
+        <!-- Nút xem danh sách sách -->
+        <a href="{% url 'book_list' %}" class="btn btn-primary">View Books</a>
+
+        <!-- Kiểm tra nếu user là superuser thì hiển thị thêm nút tạo Staff -->
+        {% if user.is_superuser %}
+            <a href="{% url 'create_staff' %}" class="btn btn-warning">Create Staff</a>
+        {% endif %}
+
+        <!-- Nút logout -->
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
