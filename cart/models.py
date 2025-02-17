@@ -8,8 +8,7 @@ class Cart(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     added_at = models.DateTimeField(auto_now_add=True)
 
-    def get_total_price(self):
-        """Tính tổng giá trị của mục trong giỏ hàng."""
+    def total_price(self):
         return self.quantity * self.book.price
 
     def __str__(self):

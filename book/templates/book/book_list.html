@@ -1,27 +1,46 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Danh sách sách</h2>
-    <a href="{% url 'book_create' %}">➕ Thêm sách mới</a>
-    <table border="1">
-        <tr>
-            <th>Tiêu đề</th>
-            <th>Tác giả</th>
-            <th>Giá</th>
-            <th>Số lượng</th>
-            <th>Hành động</th>
-        </tr>
-        {% for book in books %}
-        <tr>
-            <td>{{ book.title }}</td>
-            <td>{{ book.author }}</td>
-            <td>{{ book.price }}</td>
-            <td>{{ book.stock }}</td>
-            <td>
-                <a href="{% url 'book_update' book.pk %}">✏️ Sửa</a> |
-                <a href="{% url 'book_delete' book.pk %}">❌ Xóa</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-primary">📚 Danh sách sách</h2>
+        {% if user.is_superuser or user.is_staff %}
+            <a href="{% url 'book_create' %}" class="btn btn-success">➕ Thêm sách mới</a>
+        {% endif %}
+    </div>
+
+    <div class="table-responsive mt-3">
+        <table class="table table-hover shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Tiêu đề</th>
+                    <th>Tác giả</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.price|floatformat:2 }}₫</td>
+                    <td>{{ book.stock }}</td>
+                    <td>
+                        {% if user.is_superuser or user.is_staff %}
+                            <a href="{% url 'book_update' book.pk %}" class="btn btn-warning btn-sm">✏️ Sửa</a>
+                            <a href="{% url 'book_delete' book.pk %}" class="btn btn-danger btn-sm">❌ Xóa</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">Không có sách nào.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

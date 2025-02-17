@@ -2,31 +2,66 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>🛒 Giỏ hàng của bạn</h2>
+    <h2 class="text-center mb-4">🛒 Giỏ hàng của bạn</h2>
+
     {% if cart_items %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Sách</th>
-                    <th>Số lượng</th>
-                    <th>Giá</th>
-                    <th>Thành tiền</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in cart_items %}
-                <tr>
-                    <td>{{ item.book.title }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.book.price }} ₫</td>
-                    <td>{{ item.quantity|floatformat:0|add:item.book.price }} ₫</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <h4>Tổng tiền: {{ total_price }} ₫</h4>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <table class="table align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Sách</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-end">Giá</th>
+                                <th class="text-end">Thành tiền</th>
+                                <th class="text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                            <tr>
+                                <td>
+                                    <strong>{{ item.book.title }}</strong><br>
+                                    <small class="text-muted">Tác giả: {{ item.book.author }}</small>
+                                </td>
+                                <td class="text-center">
+                                    <form method="POST" action="{% url 'update_cart' item.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control text-center d-inline-block w-50">
+                                        <button type="submit" class="btn btn-sm btn-primary">Cập nhật</button>
+                                    </form>
+                                </td>
+                                <td class="text-end">{{ item.book.price|floatformat:0 }} ₫</td>
+                                <td class="text-end">{{ item.total_price }} ₫</td>
+                                <td class="text-center">
+                                    <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-sm btn-danger">🗑 Xóa</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cột tổng tiền & thanh toán -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h4 class="mb-3">🛍 Tổng tiền: <strong>{{ total_price|floatformat:0 }} ₫</strong></h4>
+                    <a href="{% url 'checkout' %}" class="btn btn-success w-100 py-2">🛒 Thanh toán ngay</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% else %}
+    <div class="text-center">
         <p>🛒 Giỏ hàng của bạn đang trống!</p>
+        <a href="{% url 'book_list' %}" class="btn btn-primary">📚 Tiếp tục mua sắm</a>
+    </div>
     {% endif %}
 </div>
 {% endblock %}
